@@ -4,7 +4,7 @@
 
 Name:           jq
 Version:        1.5
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Command-line JSON processor
 
 License:        MIT and ASL 2.0 and CC-BY and GPLv3
@@ -63,7 +63,7 @@ cd %{oniguruma_dir}
   --enable-static=yes \
     CC="musl-gcc"
 make %{?_smp_mflags}
-make install
+make install-strip
 cd ..
 # % configure --disable-static --disable-maintainer-mode
 %configure \
@@ -76,7 +76,7 @@ cd ..
   --disable-silent-rules \
   --disable-valgrind \
   --with-oniguruma="${PWD}/%{oniguruma_dir}-built" \
-    CC="musl-gcc" CFLAGS="-fPIC -g"
+    CC="musl-gcc" CFLAGS="-fPIC"
 make %{?_smp_mflags}
 # Docs already shipped in jq's tarball.
 # In order to build the manual page, it
@@ -93,7 +93,7 @@ make %{?_smp_mflags}
 # $ make real_docs
 
 %install
-make DESTDIR=%{buildroot} install
+make DESTDIR=%{buildroot} install-strip
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 %check
@@ -122,6 +122,9 @@ make check V=1
 %{_libdir}/libjq.a
 
 %changelog
+* Tue Jan 31 2017 ryan woodsmall <rwoodsmall@gmail.com> - 1.5-3
+- do "make install-strip" so we don't get unstripped binaries
+
 * Tue Jan 31 2017 ryan woodsmall <rwoodsmall@gmail.com> - 1.5-2
 - static build using musl and local oniguruma
 
