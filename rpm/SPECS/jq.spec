@@ -1,10 +1,10 @@
 %define		debug_package		%{nil}
-%define		oniguruma_version	6.7.1
+%define		oniguruma_version	6.8.1
 %define		oniguruma_dir		onig-%{oniguruma_version}
 
 Name:           jq
 Version:        1.5
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Command-line JSON processor
 
 License:        MIT and ASL 2.0 and CC-BY and GPLv3
@@ -122,6 +122,9 @@ make check V=1
 %{_libdir}/libjq.a
 
 %changelog
+* Sun Apr  1 2018 ryan woodsmall <rwoodsmall@gmail.com> - 1.5-6
+- oniguruma 6.8.1
+
 * Thu Feb 22 2018 ryan woodsmall <rwoodsmall@gmail.com> - 1.5-5
 - musl-libc 1.1.19
 - oniguruma 6.7.1
