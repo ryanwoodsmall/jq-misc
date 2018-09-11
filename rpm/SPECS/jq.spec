@@ -4,7 +4,7 @@
 
 Name:           jq
 Version:        1.5
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Command-line JSON processor
 
 License:        MIT and ASL 2.0 and CC-BY and GPLv3
@@ -16,7 +16,7 @@ BuildRequires:  flex
 BuildRequires:  bison
 BuildRequires:  oniguruma-devel
 BuildRequires:  glibc-static
-BuildRequires:  musl-static >= 1.1.19
+BuildRequires:  musl-static >= 1.1.20
 BuildRequires:	ruby >= 1.8
 
 %ifarch %{ix86} x86_64
@@ -122,6 +122,9 @@ make check V=1
 %{_libdir}/libjq.a
 
 %changelog
+* Tue Sep 11 2018 ryan woodsmall <rwoodsmall@gmail.com> - 1.5-8
+- release no. bump for musl 1.1.20
+
 * Fri Apr 20 2018 ryan woodsmall <rwoodsmall@gmail.com> - 1.5-7
 - oniguruma 6.8.2
 
