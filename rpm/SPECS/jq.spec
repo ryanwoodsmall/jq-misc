@@ -1,23 +1,22 @@
-%define		debug_package		%{nil}
-%define		oniguruma_version	6.9.0
-%define		oniguruma_dir		onig-%{oniguruma_version}
+%define debug_package     %{nil}
+%define oniguruma_version 6.9.0
+%define oniguruma_dir     onig-%{oniguruma_version}
 
 Name:           jq
 Version:        1.6
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Command-line JSON processor
 
 License:        MIT and ASL 2.0 and CC-BY and GPLv3
 URL:            http://stedolan.github.io/jq/
 Source0:        https://github.com/stedolan/jq/releases/download/%{name}-%{version}/%{name}-%{version}.tar.gz
-Source1:	https://github.com/kkos/oniguruma/releases/download/v%{oniguruma_version}/onig-%{oniguruma_version}.tar.gz
+Source1:        https://github.com/kkos/oniguruma/releases/download/v%{oniguruma_version}/onig-%{oniguruma_version}.tar.gz
 
 BuildRequires:  flex
 BuildRequires:  bison
-BuildRequires:  oniguruma-devel
 BuildRequires:  glibc-static
 BuildRequires:  musl-static >= 1.1.20
-BuildRequires:	ruby >= 1.8
+BuildRequires:  ruby >= 1.8
 
 %ifarch %{ix86} x86_64
 BuildRequires:  valgrind
@@ -41,8 +40,8 @@ lightweight and flexible command-line JSON processor
  you'd expect.
 
 %package devel
-Summary:	Development files for %{name}
-Requires:	%{name}%{?_isa} = %{version}-%{release}
+Summary:  Development files for %{name}
+Requires: %{name}%{?_isa} = %{version}-%{release}
 
 %description devel
 Development files for %{name}
@@ -52,20 +51,11 @@ Development files for %{name}
 %setup -qn %{name}-%{version}
 
 %build
-# build a static oniguruma
+cd modules
+rm -rf oniguruma
 tar -zxf %{SOURCE1}
-cd %{oniguruma_dir}
-./configure \
-  --prefix=${PWD}-built \
-  --enable-shared=no \
-  --disable-shared \
-  --enable-static \
-  --enable-static=yes \
-    CC="musl-gcc"
-make %{?_smp_mflags}
-make install-strip
+mv %{oniguruma_dir} oniguruma
 cd ..
-# % configure --disable-static --disable-maintainer-mode
 %configure \
   --enable-static \
   --enable-static=yes \
@@ -75,8 +65,10 @@ cd ..
   --enable-all-static \
   --disable-silent-rules \
   --disable-valgrind \
-  --with-oniguruma="${PWD}/%{oniguruma_dir}-built" \
+  --with-oniguruma=builtin \
     CC="musl-gcc" CFLAGS="-fPIC"
+find modules/oniguruma -name Makefile \
+| xargs sed -i.ORIG '/AM_CPPFLAGS/s/\$(includedir)/./g'
 make %{?_smp_mflags}
 # Docs already shipped in jq's tarball.
 # In order to build the manual page, it
@@ -95,6 +87,10 @@ make %{?_smp_mflags}
 %install
 make DESTDIR=%{buildroot} install-strip
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
+rm -f %{buildroot}%{_includedir}/onig*.h
+rm -f %{buildroot}%{_bindir}/onig*
+rm -f %{buildroot}%{_libdir}/libonig.*
+rm -f %{buildroot}%{_libdir}/pkgconfig/onig*
 
 %check
 # Valgrind used, so restrict architectures for check
@@ -108,7 +104,6 @@ make check V=1
 
 %files
 %{_bindir}/%{name}
-# % {_libdir}/libjq.so.*
 %{_datadir}/man/man1/jq.1.gz
 %{_datadir}/doc/jq/AUTHORS
 %{_datadir}/doc/jq/COPYING
@@ -118,10 +113,13 @@ make check V=1
 %files devel
 %{_includedir}/jq.h
 %{_includedir}/jv.h
-# % {_libdir}/libjq.so
 %{_libdir}/libjq.a
 
 %changelog
+* Wed Nov  7 2018 ryan woodsmall <rwoodsmall@gmail.com> - 1.6-10
+- use builtin onigurma support
+- unholy
+
 * Wed Nov  7 2018 ryan woodsmall <rwoodsmall@gmail.com> - 1.6-9
 - update to jq 1.6
 
