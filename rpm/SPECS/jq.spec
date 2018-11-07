@@ -3,7 +3,7 @@
 %define		oniguruma_dir		onig-%{oniguruma_version}
 
 Name:           jq
-Version:        1.5
+Version:        1.6
 Release:        9%{?dist}
 Summary:        Command-line JSON processor
 
@@ -122,6 +122,9 @@ make check V=1
 %{_libdir}/libjq.a
 
 %changelog
+* Wed Nov  7 2018 ryan woodsmall <rwoodsmall@gmail.com> - 1.6-9
+- update to jq 1.6
+
 * Tue Sep 11 2018 ryan woodsmall <rwoodsmall@gmail.com> - 1.5-9
 - release no. bump for oniguruma 6.9.0
 
