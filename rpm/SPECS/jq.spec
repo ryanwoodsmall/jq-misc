@@ -4,7 +4,7 @@
 
 Name:           jq
 Version:        1.6
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        Command-line JSON processor
 
 License:        MIT and ASL 2.0 and CC-BY and GPLv3
@@ -15,7 +15,7 @@ Source1:        https://github.com/kkos/oniguruma/releases/download/v%{oniguruma
 BuildRequires:  flex
 BuildRequires:  bison
 BuildRequires:  glibc-static
-BuildRequires:  musl-static >= 1.1.20
+BuildRequires:  musl-static >= 1.1.21
 BuildRequires:  ruby >= 1.8
 
 %ifarch %{ix86} x86_64
@@ -116,6 +116,9 @@ make check V=1
 %{_libdir}/libjq.a
 
 %changelog
+* Tue Jan 22 2019 ryan woodsmall <rwoodsmall@gmail.com> - 1.6.12
+- release no. bump for musl 1.1.21
+
 * Sun Dec 23 2018 ryan woodsmall <rwoodsmall@gmail.com> - 1.6-11
 - update oniguruma to 6.9.1
 
