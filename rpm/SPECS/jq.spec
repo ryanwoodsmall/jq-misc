@@ -1,17 +1,16 @@
 %define debug_package     %{nil}
-%define oniguruma_version 6.9.5
-%define oniguruma_extra   rev1
+%define oniguruma_version 6.9.6
 %define oniguruma_dir     onig-%{oniguruma_version}
 
 Name:           jq
 Version:        1.6
-Release:        21%{?dist}
+Release:        22%{?dist}
 Summary:        Command-line JSON processor
 
 License:        MIT and ASL 2.0 and CC-BY and GPLv3
 URL:            http://stedolan.github.io/jq/
 Source0:        https://github.com/stedolan/jq/releases/download/%{name}-%{version}/%{name}-%{version}.tar.gz
-Source1:        https://github.com/kkos/oniguruma/releases/download/v%{oniguruma_version}_%{oniguruma_extra}/onig-%{oniguruma_version}-%{oniguruma_extra}.tar.gz
+Source1:        https://github.com/kkos/oniguruma/releases/download/v%{oniguruma_version}/onig-%{oniguruma_version}.tar.gz
 
 BuildRequires:  flex
 BuildRequires:  bison
@@ -117,6 +116,9 @@ make check V=1
 %{_libdir}/libjq.a
 
 %changelog
+* Wed Nov  4 2020 ryan woodsmall <rwoodsmall@gmail.com>
+- release bump for oniguruma 6.9.6
+
 * Tue Oct 20 2020 ryan woodsmall <rwoodsmall@gmail.com>
 - release bump for musl 1.2.1
 
