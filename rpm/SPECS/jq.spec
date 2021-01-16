@@ -4,7 +4,7 @@
 
 Name:           jq
 Version:        1.6
-Release:        23%{?dist}
+Release:        24%{?dist}
 Summary:        Command-line JSON processor
 
 License:        MIT and ASL 2.0 and CC-BY and GPLv3
@@ -15,7 +15,7 @@ Source1:        https://github.com/kkos/oniguruma/releases/download/v%{oniguruma
 BuildRequires:  flex
 BuildRequires:  bison
 BuildRequires:  glibc-static
-BuildRequires:  musl-static >= 1.2.1-1
+BuildRequires:  musl-static >= 1.2.2-1
 BuildRequires:  ruby >= 1.8
 
 %ifarch %{ix86} x86_64
@@ -116,6 +116,9 @@ make check V=1
 %{_libdir}/libjq.a
 
 %changelog
+* Fri Jan 15 2021 ryan woodsmall <rwoodsmall@gmail.com>
+- release bump for musl 1.2.2
+
 * Wed Dec 30 2020 ryan woodsmall <rwoodsmall@gmail.com>
 - release bump for musl CVE-2020-28928
 
