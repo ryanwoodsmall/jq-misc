@@ -1,10 +1,10 @@
 %define debug_package     %{nil}
-%define oniguruma_version 6.9.6
+%define oniguruma_version 6.9.7
 %define oniguruma_dir     onig-%{oniguruma_version}
 
 Name:           jq
 Version:        1.6
-Release:        24%{?dist}
+Release:        25%{?dist}
 Summary:        Command-line JSON processor
 
 License:        MIT and ASL 2.0 and CC-BY and GPLv3
@@ -66,7 +66,9 @@ cd ..
   --disable-silent-rules \
   --disable-valgrind \
   --with-oniguruma=builtin \
-    CC="musl-gcc" CFLAGS="-fPIC"
+    CC="musl-gcc" \
+    CFLAGS="-fPIC -std=gnu99 -Wl,-static -fno-stack-protector" \
+    LDFLAGS="-lgcc -lc -ldl -static"
 find modules/oniguruma -name Makefile \
 | xargs sed -i.ORIG '/AM_CPPFLAGS/s/\$(includedir)/./g'
 make %{?_smp_mflags}
@@ -116,6 +118,9 @@ make check V=1
 %{_libdir}/libjq.a
 
 %changelog
+* Wed Apr 14 2021 ryan woodsmall <rwoodsmall@gmail.com>
+- release bump for oniguruma 6.9.7
+
 * Fri Jan 15 2021 ryan woodsmall <rwoodsmall@gmail.com>
 - release bump for musl 1.2.2
 
