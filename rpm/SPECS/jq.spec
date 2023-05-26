@@ -90,6 +90,7 @@ make %{?_smp_mflags}
 # $ make real_docs
 
 %install
+. /etc/profile
 make DESTDIR=%{buildroot} install-strip
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
 rm -f %{buildroot}%{_includedir}/onig*.h
@@ -98,6 +99,7 @@ rm -f %{buildroot}%{_libdir}/libonig.*
 rm -f %{buildroot}%{_libdir}/pkgconfig/onig*
 
 %check
+. /etc/profile
 # Valgrind used, so restrict architectures for check
 %ifarch %{ix86} x86_64
 make check V=1
